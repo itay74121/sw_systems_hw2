@@ -1,4 +1,4 @@
-gcc=gcc -Wall
+gcc=gcc -Wall -g
 all: main 
 
 main: main.o mybanklib.a

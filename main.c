@@ -12,90 +12,170 @@ int main()
 {
     char c;
     int account;
-    float amount;
+    double amount;
     int status;
-    float accounts [2][50] = {{0},{0}};
+    int count=0;
+    double accounts [2][50] = {{0},{0}};
     while(c!='E')
     {
-        c=0;
         menu();
-        printf("Enter transaction type: ");
-        scanf("%c",&c);
-
+        do
+        {
+            scanf("%c",&c);
+            }
+        while (c=='\n' || c==0);
         switch (c)
         {
-        case 0:
-            printf("\nInvalid transaction type\n");
-            break;
-        case 'O':
-            printf("Please enter amount for deposit: ");
-            status = scanf("%f%c",&amount,&t);
-            if (status==0)
-               printf("Failed to read the amount\n");
-            if(status==2)
+            case 0:
+                printf("Invalid transaction type\n");
+                break;
+            case 'O':
+                if (count==50)
+                {
+                    printf("There is no more space for accounts\n");
+                    break;
+                }
+                printf("Please enter amount for deposit: ");
+                status = scanf("%lf",&amount);
+                if (status!=1)
+                {
+                    printf("Failed to read the amount\n");
+                    break;
+                }   
+                if(amount<0)
+                {
+                    printf("Invalid Amount\n");
+                    break;
+                }
                 O(accounts,amount);
-            break;
-        case 'B':
-            printf("Please enter amount for deposit: ");
-            status = scanf("%d%c",&account,&t);
-            if(status == 0)
-                printf("Failed to read the acount number\n");
-            if(status==2)
-            {
-                B(accounts, account);
-            }
-            break;
-        case 'D':
-            printf("Please enter account number and amount: ");
-            status = scanf("%d %f%c",&account,&amount,&t);
-            if(status!=3)
-                printf("Failed reading acount or amount number\n");
-            else
-            {
+                count++;
+                break;
+            case 'B':
+                printf("Please enter account number: ");
+                status = scanf("%d",&account);
+                if(status != 1)
+                {
+                    printf("Failed to read the account number\n");
+                    break;
+                }
+                if(account>950 || account<901)
+                {
+                    printf("Invalid account number\n");
+                    break;
+                }
+                if(accounts[0][account-901]!=1)
+                {
+                    printf("This account is closed\n");
+                    break;
+                }
+                B(accounts,account);
+                break;
+            case 'D':
+                printf("Please enter account number: ");
+                status = scanf("%d",&account);
+                if (status!=1)
+                {
+                    printf("Failed to read the account number\n");
+                    break;
+                }
+                if(account>950 || account<901)
+                {
+                    printf("Invalid account number\n");
+                    break;
+                }
+                if(accounts[0][account-901]!=1)
+                {
+                    printf("This account is closed\n");
+                    break;
+                }
+                printf("Please enter the amount to deposit: ");
+                status = scanf("%lf",&amount);
+                if(status!=1)
+                {
+                    printf("Failed to read the amount\n");
+                    break;
+                }
+                if(amount<0)
+                {
+                    printf("Cannot deposit a negative amount\n");
+                    break;
+                }
                 D(accounts,account,amount);
-            }
-            break;
-        case 'W':
-            printf("Please enter account number and amount: ");
-            status = scanf("%d %f%c",&account,&amount,&t);
-            if(status!=3)
-                printf("Failed reading account or amount numebr\n");
-            else
-            {
+                break;
+            case 'W':
+                printf("Please enter account number: ");
+                status = scanf("%d",&account);
+                if(status!=1)
+                {
+                    printf("Failed to read the account number\n");
+                    break;
+                }
+                if(account>950 || account<901)
+                {
+                    printf("Invalid account number\n");
+                    break;
+                }
+                if(accounts[0][account-901]!=1)
+                {
+                    printf("This account is closed\n");
+                    break;
+                }
+                printf("Please enter the amount to withdraw: ");
+                status = scanf("%lf",&amount);
+                if(status!=1)
+                {
+                    printf("Failed to read the amount\n");
+                    break;
+                }
                 W(accounts,account,amount);
-            }
-            break;
-        case 'C':
-            printf("Please enter account number: ");
-            status = scanf("%d%c",&account,&t);
-            if(status == 0)
-               printf("Failed reading acount or amount number\n");
-            if(status==2)
-            {
-                C(accounts, account);
-            }
-            break;
-        case 'I':
-            printf("Please enter account number: ");
-            status = scanf("%f",&amount);
-            if(status==0)
-                printf("Failed reading interest rate\n");
-            if(status==2)
-            {
+                break;
+            case 'C':
+                printf("Please enter account number: ");
+                status = scanf("%d",&account);
+                if(status != 1)
+                {
+                    printf("Failed to read the account number\n");
+                    break;
+                }
+                if(account>950 || account<901)
+                {
+                    printf("Invalid account number\n");
+                    break;
+                }
+                if(accounts[0][account-901]!=1)
+                {
+                    printf("This account is already closed\n");
+                    break;
+                }
+                C(accounts,account);
+                break;
+            case 'I':
+                printf("Please enter interest rate: ");
+                status = scanf("%lf",&amount);
+                if(status!=1)
+                {
+                    printf("Failed to read the interest rate\n");
+                    break;
+                }
+                if(amount>99 || amount<-99)
+                {
+                    printf("Invalid interest rate\n");
+                    break;
+                }
                 I(accounts,amount);
-            }
-            break;
-        case 'P':
-            P(accounts);
-            scanf("%c",&t);
-            break;
-        case 'E':
-            E(accounts);
-            c='E';
-            break;   
-        default:
-          printf("\nInvalid transaction type\n");
-        break;
+                break;
+            case 'P':
+                P(accounts);
+                break;
+            case 'E':
+                E(accounts);
+                c='E';
+                break;  
+            case '\n':
+                break;
+            default:
+                printf("Invalid transaction type\n");
+                break;
         }
     }
     return 0;
